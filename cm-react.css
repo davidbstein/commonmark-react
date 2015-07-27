@@ -1,0 +1,94 @@
+.cm-react-text {
+
+}
+.cm-react-softbreak {
+
+}
+.cm-react-hardbreak {
+
+}
+.cm-react-emph {
+
+}
+.cm-react-strong {
+
+}
+.cm-react-document {
+    line-height: 28px;
+}
+.cm-react-p {
+    margin: 16px 0;
+}
+li p.cm-react-p {
+    margin: 8px 0;
+}
+.cm-react-blockquote {
+
+}
+.cm-react-li {
+
+}
+.cm-react-list {
+
+}
+ol.cm-react-list {
+    list-style-type: lower-hexadecimal;
+
+}
+ul.cm-react-list {
+    list-style-type: circle;
+
+}
+li.cm-react-item {
+    margin-left: 24px;
+
+}
+.cm-react-header {
+    font-weight: 400;
+    height: 40px;
+}
+h1.cm-react-header {
+    font-size: 32px;
+
+    line-height: 54px;
+    margin-bottom: 32px;
+}
+h2.cm-react-header {
+    font-size: 28px;
+
+    line-height: 56px;
+    margin-bottom: 16px;
+}
+h3.cm-react-header {
+    font-size: 20px;
+
+    font-weight: 600;
+    line-height: 62px;
+}
+h4.cm-react-header {
+    font-weight: bolder;
+
+    line-height: 64px;
+}
+h5.cm-react-header {
+    font-weight: bold;
+
+    line-height: 64px;
+}
+.cm-react-codeblock-wrapper {
+    background: rgba(10,10,10,.1);
+    margin: 32px;
+    padding: 16px;
+}
+.cm-react-codeblock {
+}
+.cm-react-code {
+    background: rgba(10,10,10,.1);
+}
+.cm-react-code, .cm-react-codeblock {
+    font-family: monospace;
+    white-space: pre;
+}
+.cm-react-horizontalrule {
+
+}
