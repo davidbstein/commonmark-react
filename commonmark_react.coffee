@@ -46,12 +46,19 @@ define (_v for _, _v of dependencies), () ->
     TagTypes.TEXT
   ]
 
+  SimpleTagToElem =
+    TagTypes.EMPH: "em"
+    TagTypes.STRONG: "string"
+    TagTypes.DOCUMENT: "div"
+    TagTypes.PARAGRAPH: "p"
+    TagTypes.BLOCKQUOTE: "blockquote"
+    TagTypes.ITEM: "li"
+
   _build_tree = (walker, cur_node, parent, depth=0) ->
     while current = walker.next()
       if not current?
         return
       {entering, node} = current
-      console.log depth, entering, node.type, node.type in AtomicTypes
       if entering
         new_node =
           node: node
@@ -80,87 +87,63 @@ define (_v for _, _v of dependencies), () ->
   render_node = (tree_node) ->
     options = safe: false
     {node, children} = tree_node
-    switch node.type
-      when TagTypes.TEXT
-        d.span
-          className: "cm-react-text"
+
+    # atomic objects
+    if node.type == TagTypes.SOFTBREAK
+      d.span className: "cm-react-softbreak", "\n"
+    else if node.type == TagTypes.HARDBREAK
+      d.br className: "cm-react-hardbreak"
+    else if node.type == TagTypes.HORIZONTALRULE
+      d.hr className: "cm-horizontal-rule"
+
+    # literals
+    else if node.type == TagTypes.TEXT
+      d.span className: "cm-react-text", node.literal
+    else if node.type == TagTypes.CODE
+      d.code className: "cm-react-code", node.literal
+    else if node.type in [TagTypes.HTML, TagTypes.HTMLBLOCK]
+      d.div className: "cm-react-html" dangerouslySetInnerHTML: __html: node.literal
+    else if node.type == TagTypes.CODEBLOCK
+      info_words = if node.info then node.info.split(/\s+/) else []
+      language = "code"
+      if info_words.length > 0 and info_words[0].length > 0
+        language = info_words[0]
+      d.pre className: "cm-react-codeblock-wrapper"
+        d.code className: "cm-react-codeblock"
           node.literal
-      when TagTypes.SOFTBREAK
-        d.span
-          className: "cm-react-softbreak"
-          "\n"
-      when TagTypes.HARDBREAK
-        d.br
-          className: "cm-react-hardbreak"
-      when TagTypes.EMPH
-        d.em
-          className: "cm-react-empl"
-          _render_children children
-      when TagTypes.STRONG
-        d.strong
-          className: "cm-react-string"
-          _render_children children
-      when TagTypes.HTML, TagTypes.HTMLBLOCK
-        if options.safe
-          d.span {}, '<!-- raw HTML omitted -->'
-        else
-          d.span {}, "HTML #{node.literal}"
-      when TagTypes.LINK
-        d.a
-          className: "cm-react-link"
-          href: node.destination
-          title: node.title
-          _render_children children
-      when TagTypes.IMAGE
-        d.img
-          className: "cm-react-image"
-          src: node.destination
-          title: node.title
-      when TagTypes.CODE
-        d.code
-          className: "cm-react-code"
-          node.literal
-      when TagTypes.DOCUMENT
-        d.div
-          className: "cm-react-document"
-          _render_children children
-      when TagTypes.PARAGRAPH
-        d.p
-          className: "cm-react-p"
-          _render_children children
-      when TagTypes.BLOCKQUOTE
-        d.blockquote
-          className: "cm-react-blockquote"
-          _render_children children
-      when TagTypes.ITEM
-        d.li
-          className: "cm-react-item"
-          _render_children children
-      when TagTypes.LIST
-        elementClass = if node.listType == 'Bullet' then d.ul else d.ol
-        elementClass
-          className: "cm-react-list"
-          _render_children children
-      when TagTypes.HEADER
-        tagname = 'h' + node.level
-        d[tagname]
-          className: "cm-react-header"
-          _render_children children
-      when TagTypes.CODEBLOCK
-        info_words = if node.info then node.info.split(/\s+/) else []
-        language = "code"
-        if info_words.length > 0 and info_words[0].length > 0
-          language = info_words[0]
-        d.pre
-          className: "cm-react-codeblock-wrapper"
-          d.code
-            className: "cm-react-codeblock"
-            node.literal
-      when TagTypes.HORIZONTALRULE
-        d.hr
-          className: "cm-horizontal-rule"
-      else
-        throw 'Unknown node type ' + node.type
+
+    # simple wrappers
+    else if (tag = SimpleTagToElem[node.type])?
+      tag = SimpleTagToElem[node.type]
+      d[tag] className: "cm-react-#{tag}",
+        _render_children children
+
+    # wrappers with configuration
+    else if node.type == TagTypes.HEADER
+      tagname = 'h' + node.level
+      d[tagname]
+        className: "cm-react-header"
+        _render_children children
+    else if node.type == TagTypes.LINK
+      d.a
+        className: "cm-react-link"
+        href: node.destination
+        title: node.title
+        _render_children children
+    else if node.type == TagTypes.IMAGE
+      d.img
+        className: "cm-react-image"
+        src: node.destination
+        title: node.title
+    else if node.type TagTypes.LIST
+      elementClass = if node.listType == 'Bullet' then d.ul else d.ol
+      elementClass
+        className: "cm-react-list"
+        _render_children children
+
+    # error mode
+    else
+      throw 'Unknown node type ' + node.type
 
   CommonmarkElement = React.createFactory React.createClass
     displayName: "CommonmarkElement"
@@ -173,7 +156,6 @@ define (_v for _, _v of dependencies), () ->
     render: ->
       # tree = build_tree @props.raw
       tree = build_tree @props.raw
-      console.log tree
       content = render_node tree
       d.div {},
         content
