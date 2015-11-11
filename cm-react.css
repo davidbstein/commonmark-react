@@ -111,3 +111,30 @@ blockquote p.cm-react-p {
     font-weight: 100;
     font-style: italic;
 }
+
+.cm-toc-item-section-id {
+    display: inline-block;
+    margin-right: 16px;
+    text-align: right;
+    width: 48px;
+}
+
+.cm-toc-item-section-title {
+    display: inline-block;
+}
+
+.cm-toc-item a:hover div {
+    text-decoration: underline;
+}
+
+a.cm-section-id {
+    text-decoration: none;
+    margin-right: 8px;
+    color: white;
+}
+
+.cm-table-of-contents {
+    border: 1px solid #777;
+    margin: 16px;
+    padding: 8px 0;
+}
