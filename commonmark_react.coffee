@@ -46,13 +46,14 @@ define (_v for _, _v of dependencies), () ->
     TagTypes.TEXT
   ]
 
-  SimpleTagToElem =
-    TagTypes.EMPH: "em"
-    TagTypes.STRONG: "string"
-    TagTypes.DOCUMENT: "div"
-    TagTypes.PARAGRAPH: "p"
-    TagTypes.BLOCKQUOTE: "blockquote"
-    TagTypes.ITEM: "li"
+  SimpleTagToElem = {
+    Emph: "em"
+    Strong: "strong"
+    Document: "div"
+    Paragraph: "p"
+    Blockquote: "blockquote"
+    Item: "li"
+  }
 
   _build_tree = (walker, cur_node, parent, depth=0) ->
     while current = walker.next()
@@ -102,14 +103,14 @@ define (_v for _, _v of dependencies), () ->
     else if node.type == TagTypes.CODE
       d.code className: "cm-react-code", node.literal
     else if node.type in [TagTypes.HTML, TagTypes.HTMLBLOCK]
-      d.div className: "cm-react-html" dangerouslySetInnerHTML: __html: node.literal
+      d.div className: "cm-react-html", dangerouslySetInnerHTML: __html: node.literal
     else if node.type == TagTypes.CODEBLOCK
       info_words = if node.info then node.info.split(/\s+/) else []
       language = "code"
       if info_words.length > 0 and info_words[0].length > 0
         language = info_words[0]
-      d.pre className: "cm-react-codeblock-wrapper"
-        d.code className: "cm-react-codeblock"
+      d.pre className: "cm-react-codeblock-wrapper",
+        d.code className: "cm-react-codeblock",
           node.literal
 
     # simple wrappers
@@ -124,18 +125,23 @@ define (_v for _, _v of dependencies), () ->
       d[tagname]
         className: "cm-react-header"
         _render_children children
+    else if node.type == TagTypes.BLOCKQUOTE
+      d.blockquote
+        className: "cm-react-blockquote"
+        _render_children children
     else if node.type == TagTypes.LINK
       d.a
         className: "cm-react-link"
         href: node.destination
         title: node.title
+        target: if node.destination?.substr(0, 1) != "#" then "_blank"
         _render_children children
     else if node.type == TagTypes.IMAGE
       d.img
         className: "cm-react-image"
         src: node.destination
         title: node.title
-    else if node.type TagTypes.LIST
+    else if node.type == TagTypes.LIST
       elementClass = if node.listType == 'Bullet' then d.ul else d.ol
       elementClass
         className: "cm-react-list"

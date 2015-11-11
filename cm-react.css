@@ -12,18 +12,24 @@
 }
 .cm-react-strong {
 
-}
+font-weight: 600;}
 .cm-react-document {
     line-height: 28px;
 }
 .cm-react-p {
-    margin: 16px 0;
+    margin: 24px 0;
+    line-height: 24px;
+    font-size: 16px;
 }
 li p.cm-react-p {
     margin: 8px 0;
 }
 .cm-react-blockquote {
 
+}
+.cm-react-image {
+    margin: 16px auto;
+    display: block;
 }
 .cm-react-li {
 
@@ -32,20 +38,19 @@ li p.cm-react-p {
 
 }
 ol.cm-react-list {
-    list-style-type: lower-hexadecimal;
-
+    list-style-type: decimal;
+    margin-left: 16px;
 }
 ul.cm-react-list {
     list-style-type: circle;
 
 }
-li.cm-react-item {
+li.cm-react-li {
     margin-left: 24px;
 
 }
 .cm-react-header {
     font-weight: 400;
-    height: 40px;
 }
 h1.cm-react-header {
     font-size: 32px;
@@ -77,18 +82,32 @@ h5.cm-react-header {
 }
 .cm-react-codeblock-wrapper {
     background: rgba(10,10,10,.1);
-    margin: 32px;
-    padding: 16px;
+    margin: 8px;
+    padding: 8px;
 }
 .cm-react-codeblock {
+    font-size: 16px;
 }
 .cm-react-code {
     background: rgba(10,10,10,.1);
+    color: #AFEAC9;
 }
 .cm-react-code, .cm-react-codeblock {
     font-family: monospace;
     white-space: pre;
+    overflow-x: scroll;
 }
 .cm-react-horizontalrule {
 
+}
+
+
+.cm-react-em {
+    font-style: italic;
+}
+
+blockquote p.cm-react-p {
+    line-height: 20px;
+    font-weight: 100;
+    font-style: italic;
 }
