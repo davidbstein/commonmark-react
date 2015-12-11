@@ -1,3 +1,8 @@
+/* 
+  auto-generated from chrome inspector  
+  TODO: clean up
+*/
+
 .cm-react-text {
 
 }
@@ -11,8 +16,8 @@
 
 }
 .cm-react-strong {
-
-font-weight: 600;}
+    font-weight: 600;
+}
 .cm-react-document {
     line-height: 28px;
 }
@@ -60,9 +65,9 @@ h1.cm-react-header {
 }
 h2.cm-react-header {
     font-size: 28px;
-
     line-height: 56px;
     margin-bottom: 16px;
+    margin-top: 64px;
 }
 h3.cm-react-header {
     font-size: 20px;
@@ -89,8 +94,8 @@ h5.cm-react-header {
     font-size: 16px;
 }
 .cm-react-code {
-    background: rgba(10,10,10,.1);
-    color: #AFEAC9;
+    background: rgba(10, 10, 10, 0.05);
+    color: #09A54D;
 }
 .cm-react-code, .cm-react-codeblock {
     font-family: monospace;
@@ -131,6 +136,7 @@ a.cm-section-id {
     text-decoration: none;
     margin-right: 8px;
     color: white;
+    display: none;
 }
 
 .cm-table-of-contents {
